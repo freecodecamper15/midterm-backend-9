@@ -1,0 +1,41 @@
+<h1 class='title'><%= @post.title %></h1>
+
+<!-- <p><%= @post.content %></p> -->
+<%= @post.category.try(:name) %>
+
+<%= simple_format(@post.content) %>
+
+<%= link_to 'Back', posts_path, :method => :get %>
+<%= link_to 'Edit Post', edit_post_path(@post) %>
+<%= link_to 'Delete Post', post_path(@post), :method => :delete, :data => { :confirm => 'You sure you wanna delete this post, bro?' } %>
+
+
+
+<%= form_for [@post, @comment] do |f| %>
+  <%= f.label :content, 'Comment' %>
+  <%= f.text_area :content %>
+
+  <%= f.submit 'Post New Comment' %>
+<% end %>
+
+<h3>Past Comments</h3>
+<p>There are <%= @post.comments.size %> comments in this post.</p>
+
+<table class='table-bordered table-striped col-md-12 table-hover'>
+  <tr>
+    <th class='text-center'>Comment</th>
+  </tr>
+  <% @post.comments.each do |c| %>
+    <tr>
+      <td class='col-md-10'><%= c.content %></td>
+      <td class='col-md-1 text-center'><%= link_to 'Edit' %></td>
+      <td class='col-md-1 text-center'>
+        <% if c.user == current_user %>
+          <%= link_to 'Delete', post_comment_path(@post, c), :method => :delete %>
+        <% end %>
+      </td>
+
+    </tr>
+  <% end %>
+
+</table>

@@ -1,0 +1,9 @@
+<% if @post.errors.any? %>
+  <ul>
+    <% @post.erros.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+

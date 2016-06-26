@@ -38,4 +38,7 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  # devise 加入寄信時預設的網站網址
+  config.action_mailer.default_url_options = { :host => 'localhost:3000' }
 end

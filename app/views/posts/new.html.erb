@@ -1,0 +1,18 @@
+<%= form_for @post do |f| %>
+
+  <p>
+    <%= f.label 'Title' %>
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.label 'Category' %>
+    <%= f.collection_select(:category_id, Category.all, :id, :name) %>
+  </p>
+  <p>
+    <%= f.label 'Content' %>
+    <%= f.text_area :content %>
+  </p>
+
+  <%= f.submit 'Creadte New Post' %>
+<% end %>
+

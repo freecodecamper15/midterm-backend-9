@@ -1,0 +1,33 @@
+<table class='table col-md-12'>
+  <tr>
+    <th colspan='3'>Title</th>
+    <th colspan='3'>Category</th>
+    <th colspan='3'>Submit Time</th>
+  </tr>
+  <% @posts.each do |p| %>
+    <tr>
+        <td colspan='3'><%= link_to p.title, post_path(p) %></td>
+        <td colspan='3'><%= p.category.try(:name) %></td>
+        <td colspan='3'><%= p.created_at %></td>
+        <td colspan='3'>
+          <%= link_to 'Edit', edit_post_path(p) %>
+          <%= link_to 'Delete', post_path(p), :method => :delete, :data => { :confirm => 'Are you sure?' } %>
+          <%= link_to 'Comments', post_comments_path(p) %>
+        </td>
+    </tr>
+  <% end %>
+</table>
+
+
+<ul style='list-style: none'>
+  <li>Total number of posts: <%= Post.all.size %></li>
+  <li>Total number of comments: <%= Comment.all.size %></li>
+</ul>
+
+<%= paginate @posts %>
+
+
+
+
+
+
