@@ -20,6 +20,8 @@ class CommentsController < ApplicationController
     else
       flash[:alert] = 'You don\'t have the authority to delete any comment...'
     end
+
+    redirect_to :back
   end
 
 

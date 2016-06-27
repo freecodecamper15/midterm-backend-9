@@ -8,14 +8,13 @@
 </head>
 <body>
 <% if current_user %>
-  <p>Hi, <%= current_user.name %>!</p>
   <%= link_to('登出', destroy_user_session_path, :method => :delete) %> |
   <%= link_to('修改密碼', edit_registration_path(:user)) %>
 <% else %>
   <%= link_to('註冊', new_registration_path(:user)) %> |
   <%= link_to('登入', new_session_path(:user)) %>
 <% end %>
-
+<h1>Admin Interface</h1>
 <h1 class='title' style='color: #410c7a'>災情速速報</h1>
 
 <%= link_to '張貼新災情資訊', new_post_path %>
@@ -23,10 +22,10 @@
 <p style='color:green'><%= notice %></p>
 <p style='color:red'><%= alert %></p>
 
-<%= link_to 'admin', admin_posts_path, :class => 'btn btn-info'%>
 
 <%= yield %>
 
 
+<%= link_to 'admin', admin_posts_path %>
 </body>
 </html>

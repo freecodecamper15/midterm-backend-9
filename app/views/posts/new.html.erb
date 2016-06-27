@@ -8,6 +8,11 @@
     <%= f.label 'Category' %>
     <%= f.collection_select(:category_id, Category.all, :id, :name) %>
   </p>
+
+  <div class='form-group'>
+    <%= f.label :status, 'Status' %>
+    <%= f.select :status, [ ["Published", "PUBLISHED"], ["Draft", "DRAFT"]] %>
+  </div>
   <p>
     <%= f.label 'Content' %>
     <%= f.text_area :content %>

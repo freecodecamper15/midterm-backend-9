@@ -1,14 +1,23 @@
 <%= form_for @post, :url => post_path(@post), :method => :patch do |f| %>
 
-<div class='field'>
+<div class='form-group'>
   <%= f.label :title, 'Title' %>
-  <%= f.text_field :title %>
+  <%= f.text_field :title, :required => true, :class => 'form-control' %>
 </div>
-<div class='field'>
+
+<div class='form-group'>
+  <%= f.label :status, 'Status' %>
+  <%= f.select :status, [ ["Published", "PUBLISHED"], ["Draft", "DRAFT"] ] %>
+</div>
+<div class='form-group'>
   <%= f.label 'Category' %>
   <%= f.collection_select(:category_id, Category.all, :id, :name) %>
+  <%= f.select :category_id, Category.all.map{ |x| [x.name, x.id] }, :class => 'form-control' %>
+  <% Category.all.each do |c| %>
+    <%= f.radio_button :category_id, c.id %> <%= c.name %>
+  <% end %>
 </div>
-<div class='field'>
+<div class='form-group'>
   <%= f.label :content, 'Content' %>
   <%= f.text_area :content %>
 </div>

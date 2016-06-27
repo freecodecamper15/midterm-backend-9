@@ -3,8 +3,23 @@ Rails.application.routes.draw do
   devise_for :users
 
   resources :posts do
-    resources :comments, :controller => 'comments'
+    resources :comments
+
+    collection do
+      get :latest
+
+      post :bulk_update
+    end
+
+    member do
+      get :dashboard
+    end
   end
+
+  namespace :admin do
+    resources :posts
+  end
+
 
   root :to => 'posts#index'
   # The priority is based upon order of creation: first created -> highest priority.

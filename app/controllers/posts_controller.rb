@@ -1,9 +1,9 @@
 class PostsController < ApplicationController
-  before_action :find_post, :only => [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, :only => [:new, :create]
+  before_action :find_post, :only => [:show, :edit, :update, :destroy, :dashboard]
+  before_action :authenticate_user!, :except => [:index, :show]
 
   def index
-    @posts = Post.page(params[:page]).per(5).order('created_at DESC')
+    prepare_variable_for_index_template
   end
 
   def new
@@ -12,11 +12,11 @@ class PostsController < ApplicationController
 
   def create
     @post = Post.new(post_params)
-    @post.user == current_user
-    @post.save
-
-    redirect_to posts_path
-    flash[:notice] = 'The post has been saved:)'
+    @post.user = current_user
+    if @post.save
+      redirect_to posts_path
+      flash[:notice] = 'The post has been saved:)'
+    end
   end
 
   def show
@@ -24,6 +24,7 @@ class PostsController < ApplicationController
   end
 
   def edit
+
   end
 
   def update
@@ -46,6 +47,27 @@ class PostsController < ApplicationController
     redirect_to posts_path
   end
 
+  # get /events/latest
+  def latest
+    @posts = Post.order('id DESC').limit(3)
+  end
+
+  def bulk_update
+    ids = Array( params[:ids] )
+    posts = ids.map{ |i| Post.find_by_id(i) }.compact
+
+    if params[:commit] == 'Delete'
+      posts.each { |p| p.destroy }
+    elsif params[:commit] == 'Publish'
+      posts.each { |p| p.update( :status => 'published') }
+    end
+
+    redirect_to :back
+  end
+
+  def dashboard
+
+  end
 
   private
 
@@ -54,8 +76,23 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :content, :category_id)
+    params.require(:post).permit(:title, :content, :category_id, :status)
   end
 
+  def prepare_variable_for_index_template
+    if params[:keyword]
+      @posts = Post.where( [ "title like ?", "%#{params[:keyword]}%" ] )
+    else
+      @posts = Post.all
+    end
 
+    if params[:order]
+      sort_by = (params[:order] == 'title') ? 'title' : 'id'
+      @posts = @posts.order(sort_by)
+    end
+
+    @posts = @posts.page(params[:page]).per(5)
+    #.order('created_at DESC')
+
+  end
 end
