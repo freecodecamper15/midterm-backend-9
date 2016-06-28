@@ -32,7 +32,11 @@
   <% @post.comments.each do |c| %>
     <tr>
       <td class='col-md-10'><%= c.content %></td>
-      <td class='col-md-1 text-center'><%= link_to 'Edit' %></td>
+      <td class='col-md-1 text-center'>
+        <% if c.user == current_user %>
+          <%= link_to 'Edit', edit_post_comment_path(@post, c) %>
+        <% end %>
+      </td>
       <td class='col-md-1 text-center'>
         <% if c.user == current_user %>
           <%= link_to 'Delete', post_comment_path(@post, c), :method => :delete, :data => { :confirm => 'Are you sure????' } %>
